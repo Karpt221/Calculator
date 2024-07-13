@@ -1,0 +1,36 @@
+body{
+    margin: 0;
+}
+
+.calculator-container{
+    background-color: gray;
+    width: 400px;
+    margin: 40vh auto;
+    padding: 10px;
+}
+
+.calculator-keypad input,
+.calculator-display{
+    font-size: 50px;
+}
+.calculator-display{
+    background-color:aqua;
+    height: 100px;
+    padding-right: 5px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.calculator-keypad{
+    display: flex;
+    align-items: flex-end;
+    
+}
+.calculator-keypad input{
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+
