@@ -50,7 +50,9 @@ document
    numberBtn.addEventListener("click",() =>{
     if(num2Entered){
         num2 = parseFloat(calculatorDisplay.textContent);
-        calculatorDisplay.textContent = operate(num1, num2, operator);
+        let result = operate(num1, num2, operator);
+        if(Number.isInteger(result)) calculatorDisplay.textContent = result;
+        else calculatorDisplay.textContent = result.toFixed(6);
         num2Entered = false;
     }
     num1 = parseFloat(calculatorDisplay.textContent);

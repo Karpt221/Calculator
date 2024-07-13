@@ -4,7 +4,7 @@ body{
 
 .calculator-container{
     background-color: gray;
-    width: 400px;
+    width: 440px;
     margin: 40vh auto;
     padding: 10px;
 }
@@ -31,6 +31,18 @@ body{
     width: 100px;
     height: 100px;
     display: block;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }
 
+.col{
+    margin: 0 5px;
+}
+
+.operators, .clear-entrie, .clear-all{
+    background-color: orange;
+}
+.equal{
+    background-color: greenyellow;
+}
 
