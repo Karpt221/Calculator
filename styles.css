@@ -1,12 +1,14 @@
 body{
     margin: 0;
+    background-color: rgb(76, 76, 76);
 }
 
 .calculator-container{
-    background-color: gray;
+    background-color: #1C1C1C;
     width: 440px;
     margin: 40vh auto;
     padding: 10px;
+    border-radius: 10px;
 }
 
 .calculator-keypad input,
@@ -14,13 +16,14 @@ body{
     font-size: 50px;
 }
 .calculator-display{
-    background-color:aqua;
+    background-color:#D4D4D2;
     height: 100px;
     padding-right: 5px;
     display: flex;
     justify-content: end;
     align-items: center;
     margin-bottom: 10px;
+    border-radius: 10px;
 }
 .calculator-keypad{
     display: flex;
@@ -31,8 +34,11 @@ body{
     width: 100px;
     height: 100px;
     display: block;
-    border-radius: 20px;
+    border-radius: 50px;
     margin-bottom: 10px;
+    background-color: #505050;
+    color: white;
+    border: none;
 }
 
 .col{
@@ -40,9 +46,11 @@ body{
 }
 
 .operators, .clear-entrie, .clear-all{
-    background-color: orange;
-}
-.equal{
-    background-color: greenyellow;
+    background-color: #FF9500;
 }
 
+.calculator-keypad  .clear-all, 
+.calculator-keypad  .clear-entrie{
+    background-color: #D4D4D2;
+    color: #1C1C1C;
+}

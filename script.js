@@ -3,6 +3,8 @@ let num2  = null;
 let operator  = null;
 let num2FirstNumber = false;
 let num2Entered = false;
+
+let choosedOperatorButton = null;
 const calculatorDisplay = document.querySelector(".calculator-display");
 
 function operate(num1, num2, operator){
@@ -46,18 +48,23 @@ document
 
 document
 .querySelectorAll(".operators")
-.forEach(numberBtn => {
-   numberBtn.addEventListener("click",() =>{
-    if(num2Entered){
-        num2 = parseFloat(calculatorDisplay.textContent);
-        let result = operate(num1, num2, operator);
-        if(Number.isInteger(result)) calculatorDisplay.textContent = result;
-        else calculatorDisplay.textContent = result.toFixed(6);
-        num2Entered = false;
-    }
-    num1 = parseFloat(calculatorDisplay.textContent);
-    operator = numberBtn.value;
-    num2FirstNumber = true;
+.forEach(operatorBtn => {
+    operatorBtn.addEventListener("click",() =>{
+        operatorBtn.style.backgroundColor = "mediumslateblue";
+        if(choosedOperatorButton !== null && !operatorBtn.isEqualNode(choosedOperatorButton)) choosedOperatorButton.style.backgroundColor = "orange";
+        choosedOperatorButton = operatorBtn;
+
+
+        if(num2Entered){
+            num2 = parseFloat(calculatorDisplay.textContent);
+            let result = operate(num1, num2, operator);
+            if(Number.isInteger(result)) calculatorDisplay.textContent = result;
+            else calculatorDisplay.textContent = result.toFixed(6);
+            num2Entered = false;
+        }
+        num1 = parseFloat(calculatorDisplay.textContent);
+        operator = operatorBtn.value;
+        num2FirstNumber = true;
    });
 });
 
@@ -71,7 +78,11 @@ document
     if(Number.isInteger(result)) calculatorDisplay.textContent = result;
     else calculatorDisplay.textContent = result.toFixed(6);
     
-    num1 = num2 = operator = null;
+    choosedOperatorButton.style.backgroundColor = "orange";
+    choosedOperatorButton = null;
+    num1 = null;
+    num2 = null;
+    operator = null;
     num2Entered = false;
 });
 
@@ -79,8 +90,12 @@ document
 .querySelector(".clear-all")
 .addEventListener("click",() => {
     calculatorDisplay.textContent = "0";
-    num1 = num2 = operator = null;
+    num1 = null;
+    num2 = null;
+    operator = null;
     num2Entered = num2FirstNumber = false;
+    choosedOperatorButton.style.backgroundColor = "orange";
+    choosedOperatorButton = null;
 });
 
 document
@@ -88,6 +103,8 @@ document
 .addEventListener("click",(event) => {
     if(!num2Entered){
         if(operator) {
+            choosedOperatorButton.style.backgroundColor = "orange";
+            choosedOperatorButton = null;
             operator = null;
             return;
         }
