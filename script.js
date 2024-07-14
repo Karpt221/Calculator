@@ -1,11 +1,14 @@
 let num1 = null;
 let num2  = null;
 let operator  = null;
-let num2FirstNumber = false;
-let num2Entered = false;
+
+let waitingForFirstNum2Number = false;
+let num1Typed = false;
+let operatorTyped = false;
+let num2Typed = false;
 
 let choosedOperatorButton = null;
-const calculatorDisplay = document.querySelector(".calculator-display");
+const display = document.querySelector(".calculator-display");
 
 function operate(num1, num2, operator){
     num1 = parseFloat(num1);
@@ -22,26 +25,57 @@ function operate(num1, num2, operator){
     }
 }
 
+function resetAllVariables(){
+    if(choosedOperatorButton !== null)
+        choosedOperatorButton.style.backgroundColor = "orange";
+    choosedOperatorButton = null;
+    num1 = null;
+    num2 = null;
+    operator = null;
+    num1Typed = false;
+    operatorTyped = false;
+    num2Typed = false;
+    waitingForFirstNum2Number = false;
+}
+
+function displayResult(){
+    num2 = parseFloat(display.textContent);
+    let result = operate(num1, num2, operator);
+    let fractionalPartLength = 0;
+    if(!Number.isInteger(result)){
+        fractionalPartLength = result
+        .toString()
+        .split(".")[1]
+        .length;
+    }
+    if(fractionalPartLength > 6){
+        display.textContent = result.toFixed(6);
+    }else{
+        display.textContent = result;
+    }
+}
+
 document
 .querySelectorAll(".numbers")
 .forEach(numberBtn => {
    numberBtn.addEventListener("click",() =>{
-    if(numberBtn.value === "." && calculatorDisplay.textContent.includes(".")) return;
+    if(numberBtn.value === "." && display.textContent.includes(".")) return;
 
-    if(num1 && operator){
-        if(num2FirstNumber){
-            calculatorDisplay.textContent = numberBtn.value;
-            num2FirstNumber = false;
+    if(num1Typed && operatorTyped){
+        if(waitingForFirstNum2Number){
+            display.textContent = numberBtn.value;
+            waitingForFirstNum2Number = false;
         }else{
-            calculatorDisplay.textContent += numberBtn.value;
+            display.textContent += numberBtn.value;
         }
-        num2Entered = true;
+        if(!num2Typed) num2Typed = true;
+        
         return;
     }
-    if(calculatorDisplay.textContent === "0"){
-        calculatorDisplay.textContent = numberBtn.value;
+    if(display.textContent === "0"){
+        display.textContent = numberBtn.value;
     }else{
-        calculatorDisplay.textContent += numberBtn.value;
+        display.textContent += numberBtn.value;
     }
    });
 });
@@ -51,20 +85,24 @@ document
 .forEach(operatorBtn => {
     operatorBtn.addEventListener("click",() =>{
         operatorBtn.style.backgroundColor = "mediumslateblue";
-        if(choosedOperatorButton !== null && !operatorBtn.isEqualNode(choosedOperatorButton)) choosedOperatorButton.style.backgroundColor = "orange";
+        if(choosedOperatorButton !== null &&
+            !operatorBtn.isEqualNode(choosedOperatorButton)){
+                choosedOperatorButton.style.backgroundColor = "orange";
+        }
         choosedOperatorButton = operatorBtn;
 
-
-        if(num2Entered){
-            num2 = parseFloat(calculatorDisplay.textContent);
-            let result = operate(num1, num2, operator);
-            if(Number.isInteger(result)) calculatorDisplay.textContent = result;
-            else calculatorDisplay.textContent = result.toFixed(6);
-            num2Entered = false;
+        if(num2Typed){
+            displayResult();
+            num2 = null;
+            num2Typed = false;
+            console.log(`num2Typed: ${num2Typed}`);
         }
-        num1 = parseFloat(calculatorDisplay.textContent);
+        num1 = parseFloat(display.textContent);
         operator = operatorBtn.value;
-        num2FirstNumber = true;
+        num1Typed = true;
+        operatorTyped = true;
+        waitingForFirstNum2Number = true;
+
    });
 });
 
@@ -72,47 +110,37 @@ document
 document
 .querySelector(".equal")
 .addEventListener("click",() => {
-    if(!num2Entered) return;
-    num2 = parseFloat(calculatorDisplay.textContent);
-    let result = operate(num1, num2, operator);
-    if(Number.isInteger(result)) calculatorDisplay.textContent = result;
-    else calculatorDisplay.textContent = result.toFixed(6);
-    
-    choosedOperatorButton.style.backgroundColor = "orange";
-    choosedOperatorButton = null;
-    num1 = null;
-    num2 = null;
-    operator = null;
-    num2Entered = false;
+    if(!num2Typed) return;
+    displayResult();
+    resetAllVariables();
 });
 
 document
 .querySelector(".clear-all")
 .addEventListener("click",() => {
-    calculatorDisplay.textContent = "0";
-    num1 = null;
-    num2 = null;
-    operator = null;
-    num2Entered = num2FirstNumber = false;
-    choosedOperatorButton.style.backgroundColor = "orange";
-    choosedOperatorButton = null;
+    display.textContent = "0";
+    resetAllVariables();
 });
 
 document
 .querySelector(".clear-entrie")
-.addEventListener("click",(event) => {
-    if(!num2Entered){
-        if(operator) {
-            choosedOperatorButton.style.backgroundColor = "orange";
-            choosedOperatorButton = null;
-            operator = null;
-            return;
-        }
+.addEventListener("click",() => {
+    if(!num2Typed && operatorTyped){
+        choosedOperatorButton.style.backgroundColor = "orange";
+        choosedOperatorButton = null;
+        operator = null;
+        operatorTyped = false;
+        return;
     }
-    calculatorDisplay.textContent = calculatorDisplay.textContent.
-    slice(0, calculatorDisplay.textContent.length - 1);
+     
+    display.textContent = display.textContent
+    .slice(0, display.textContent.length - 1);
 
-    if(calculatorDisplay.textContent === "") {
-        calculatorDisplay.textContent = "0"; 
+    if(display.textContent === "") {
+        if(num2Typed){
+            waitingForFirstNum2Number = true;
+        }
+        display.textContent = "0"; 
+        
     }
 });

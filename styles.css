@@ -45,7 +45,7 @@ body{
     margin: 0 5px;
 }
 
-.operators, .clear-entrie, .clear-all{
+.calculator-keypad .operators{
     background-color: #FF9500;
 }
 
