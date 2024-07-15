@@ -26,8 +26,9 @@ function operate(num1, num2, operator){
 }
 
 function resetAllVariables(){
-    if(choosedOperatorButton !== null)
+    if(choosedOperatorButton !== null){
         choosedOperatorButton.style.backgroundColor = "orange";
+    }
     choosedOperatorButton = null;
     num1 = null;
     num2 = null;
@@ -42,7 +43,7 @@ function displayResult(){
     num2 = parseFloat(display.textContent);
     let result = operate(num1, num2, operator);
     let fractionalPartLength = 0;
-    if(!Number.isInteger(result)){
+    if(Number.isFinite(result) && !Number.isInteger(result)){
         fractionalPartLength = result
         .toString()
         .split(".")[1]
@@ -50,7 +51,8 @@ function displayResult(){
     }
     if(fractionalPartLength > 6){
         display.textContent = result.toFixed(6);
-    }else{
+    }
+    else{
         display.textContent = result;
     }
 }
@@ -141,7 +143,7 @@ document
         display.textContent = display.textContent
         .slice(0, display.textContent.length - 1);
 
-        if(display.textContent === "") {
+        if(display.textContent === "" || display.textContent === "Infinit") {
             if(num2Typed){
                 waitingForFirstNum2Number = true;
             }
