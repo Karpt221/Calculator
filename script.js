@@ -95,7 +95,6 @@ document
             displayResult();
             num2 = null;
             num2Typed = false;
-            console.log(`num2Typed: ${num2Typed}`);
         }
         num1 = parseFloat(display.textContent);
         operator = operatorBtn.value;
@@ -125,22 +124,28 @@ document
 document
 .querySelector(".clear-entrie")
 .addEventListener("click",() => {
-    if(!num2Typed && operatorTyped){
+    if(waitingForFirstNum2Number && display.textContent === "0"){
+        display.textContent = num1;
+        num2Typed = false;
+        waitingForFirstNum2Number = false;
+    }
+    else if(!num2Typed && operatorTyped){
         choosedOperatorButton.style.backgroundColor = "orange";
         choosedOperatorButton = null;
         operator = null;
         operatorTyped = false;
-        return;
+        num1 = null;
+        num1Typed = false;
     }
-     
-    display.textContent = display.textContent
-    .slice(0, display.textContent.length - 1);
+    else{
+        display.textContent = display.textContent
+        .slice(0, display.textContent.length - 1);
 
-    if(display.textContent === "") {
-        if(num2Typed){
-            waitingForFirstNum2Number = true;
+        if(display.textContent === "") {
+            if(num2Typed){
+                waitingForFirstNum2Number = true;
+            }
+            display.textContent = "0"; 
         }
-        display.textContent = "0"; 
-        
     }
 });
