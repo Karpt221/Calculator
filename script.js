@@ -27,7 +27,8 @@ function operate(num1, num2, operator){
 
 function resetAllVariables(){
     if(choosedOperatorButton !== null){
-        choosedOperatorButton.style.backgroundColor = "orange";
+        choosedOperatorButton.classList.remove("selected-operator");
+        choosedOperatorButton.classList.add("not-selected-operator");
     }
     choosedOperatorButton = null;
     num1 = null;
@@ -42,6 +43,7 @@ function resetAllVariables(){
 function displayResult(){
     num2 = parseFloat(display.textContent);
     let result = operate(num1, num2, operator);
+    if(result.toString().length > 15) result = parseFloat(result.toPrecision(15));
     let fractionalPartLength = 0;
     if(Number.isFinite(result) && !Number.isInteger(result)){
         fractionalPartLength = result
@@ -61,6 +63,8 @@ document
 .querySelectorAll(".numbers")
 .forEach(numberBtn => {
    numberBtn.addEventListener("click",() =>{
+    if(display.textContent.length === 15 && !waitingForFirstNum2Number) return;
+
     if(numberBtn.value === "." && display.textContent.includes(".")) return;
 
     if(num1Typed && operatorTyped){
@@ -86,10 +90,12 @@ document
 .querySelectorAll(".operators")
 .forEach(operatorBtn => {
     operatorBtn.addEventListener("click",() =>{
-        operatorBtn.style.backgroundColor = "mediumslateblue";
+        operatorBtn.classList.add("selected-operator");
+        operatorBtn.classList.remove("not-selected-operator");
         if(choosedOperatorButton !== null &&
             !operatorBtn.isEqualNode(choosedOperatorButton)){
-                choosedOperatorButton.style.backgroundColor = "orange";
+                choosedOperatorButton.classList.remove("selected-operator");
+                choosedOperatorButton.classList.add("not-selected-operator");
         }
         choosedOperatorButton = operatorBtn;
 
@@ -103,7 +109,6 @@ document
         num1Typed = true;
         operatorTyped = true;
         waitingForFirstNum2Number = true;
-
    });
 });
 
@@ -132,7 +137,8 @@ document
         waitingForFirstNum2Number = false;
     }
     else if(!num2Typed && operatorTyped){
-        choosedOperatorButton.style.backgroundColor = "orange";
+        choosedOperatorButton.classList.remove("selected-operator");
+        choosedOperatorButton.classList.add("not-selected-operator");
         choosedOperatorButton = null;
         operator = null;
         operatorTyped = false;
