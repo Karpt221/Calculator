@@ -18,9 +18,9 @@ function operate(num1, num2, operator){
             return num1 + num2;
         case "-": 
             return num1 - num2;
-        case "*": 
+        case "×": 
             return num1 * num2;
-        case "/": 
+        case "÷": 
             return num1 / num2;
     }
 }
@@ -156,4 +156,16 @@ document
             display.textContent = "0"; 
         }
     }
+});
+
+document
+.querySelector(".change-sign")
+.addEventListener("click", () => {
+    if(num1Typed && !num2Typed) return;
+    if(display.textContent.at(0) === "-"){
+        display.textContent = display.textContent.slice(1);
+    }else{
+        display.textContent = "-" + display.textContent;
+    }
+    
 });
