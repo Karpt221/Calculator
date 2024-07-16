@@ -161,11 +161,10 @@ document
 document
 .querySelector(".change-sign")
 .addEventListener("click", () => {
-    if(num1Typed && !num2Typed) return;
     if(display.textContent.at(0) === "-"){
         display.textContent = display.textContent.slice(1);
     }else{
         display.textContent = "-" + display.textContent;
     }
-    
+    if(num1Typed && !num2Typed) num1 = parseFloat(display.textContent);
 });
